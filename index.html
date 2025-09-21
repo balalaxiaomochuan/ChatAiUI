@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat AI</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 页面内容 -->
+    <div id="app">
+        <!-- 侧边栏 -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>💬 Chat AI</h2>
+            </div>
+            <button class="new-chat-btn">+ 新建聊天</button>
+            <div class="chat-history">
+                <!-- 聊天历史记录将在这里显示 -->
+            </div>
+            <div class="sidebar-footer">
+                <div>Chat AI v1.0</div>
+            </div>
+        </aside>
+        
+        <!-- 主聊天区域 -->
+        <main class="main">
+            <!-- 聊天记录显示区域 -->
+            <div class="chat-container">
+                <!-- 消息将在这里显示 -->
+            </div>
+            
+            <!-- 输入区域 -->
+            <div class="input-container">
+                <div class="input-box">
+                    <textarea class="input-area" placeholder="输入消息..." rows="1"></textarea>
+                    <button class="send-btn">➤</button>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="js/main.js"></script>
+</body>
+</html>
