@@ -1,5 +1,17 @@
 // DOM 加载完成后执行
 document.addEventListener('DOMContentLoaded', function() {
+    // 配置 marked
+    if (typeof marked !== 'undefined') {
+        marked.setOptions({
+            breaks: true,        // 转换 \n 为 <br>
+            gfm: true,           // 启用 GitHub 风格的 Markdown
+            smartLists: true,    // 使用智能列表
+            smartypants: true,   // 使用智能标点
+            pedantic: false,     // 不严谨模式
+            sanitize: false,     // 不清理 HTML 标签
+            silent: false        // 不静默错误
+        });
+    }
     // 获取页面元素
     const chatContainer = document.querySelector('.chat-container');
     const inputArea = document.querySelector('.input-area');
@@ -37,41 +49,157 @@ document.addEventListener('DOMContentLoaded', function() {
         this.style.height = (this.scrollHeight) + 'px';
     });
     
-    // 发送消息函数
-    function sendMessage() {
-        const message = inputArea.value.trim();
-        if (message && !isWaitingForResponse) {
-            // 添加用户消息
-            addMessage(message, 'user');
-            
-            // 清空输入框
-            inputArea.value = '';
-            inputArea.style.height = 'auto';
-            
-            // 禁用发送按钮和输入框
-            sendButton.disabled = true;
-            inputArea.disabled = true;
-            isWaitingForResponse = true;
-            
-            // 显示AI正在输入的指示器
-            showAITypingIndicator();
-            
-            // 模拟AI回复（实际项目中这里会调用后端API）
-            setTimeout(() => {
-                // 移除正在输入的指示器
-                removeAITypingIndicator();
+    // 替换原有的 sendMessage 函数
+function sendMessage() {
+    const message = inputArea.value.trim();
+    if (message && !isWaitingForResponse) {
+        // 添加用户消息
+        addMessage(message, 'user');
+        
+        // 清空输入框
+        inputArea.value = '';
+        inputArea.style.height = 'auto';
+        
+        // 禁用发送按钮和输入框
+        sendButton.disabled = true;
+        inputArea.disabled = true;
+        isWaitingForResponse = true;
+        
+        // 调用后端流式API
+        callStreamAPI(message);
+    }
+}
+
+// 新增：调用后端流式API函数
+// 替换现有的 callStreamAPI 函数
+function callStreamAPI(prompt) {
+    // 显示AI正在输入的指示器
+    showAITypingIndicator();
+    
+    // 使用 fetch API 调用后端流式接口
+    fetch('http://localhost:8080/chataidesign/api/ai/stream', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'text/event-stream'
+        },
+        body: JSON.stringify({prompt: prompt})
+    })
+    .then(response => {
+        // 移除正在输入的指示器
+        removeAITypingIndicator();
+        
+        // 检查响应是否成功
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        // 获取响应体的可读流
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder('utf-8');
+        
+        // 创建AI消息容器
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message ai';
+        
+        const avatarDiv = document.createElement('div');
+        avatarDiv.className = 'avatar';
+        avatarDiv.textContent = 'AI';
+        
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'message-content';
+        contentDiv.textContent = ''; // 初始为空
+        
+        messageDiv.appendChild(avatarDiv);
+        messageDiv.appendChild(contentDiv);
+        chatContainer.appendChild(messageDiv);
+        
+        // 滚动到底部
+        scrollToBottom();
+        
+        // 存储累积的数据用于处理多行
+        let accumulatedData = '';
+        
+        // 递归读取流数据
+        function readStream() {
+            reader.read().then(({ done, value }) => {
+                if (done) {
+                    // 流结束，重新启用输入
+                    sendButton.disabled = false;
+                    inputArea.disabled = false;
+                    isWaitingForResponse = false;
+                    inputArea.focus();
+                    return;
+                }
                 
-                const aiResponse = generateAIResponse(message);
-                addMessage(aiResponse, 'ai');
+                // 解码数据
+                const chunk = decoder.decode(value, { stream: true });
+                accumulatedData += chunk;
                 
-                // 重新启用发送按钮和输入框
+                // 按行处理数据
+                const lines = accumulatedData.split('\n');
+                accumulatedData = lines.pop(); // 保留不完整的最后一行
+                
+                for (const line of lines) {
+                    if (line.startsWith('data: ')) {
+                        const data = line.substring(6); // 移除 'data: ' 前缀
+                        if (data === '[DONE]') {
+                            // 流结束
+                            sendButton.disabled = false;
+                            inputArea.disabled = false;
+                            isWaitingForResponse = false;
+                            inputArea.focus();
+                            return;
+                        } else {
+                            // 处理内容数据
+                            const content = data.replace(/\\n/g, '\n').replace(/\\r/g, '\r');
+                            // 处理自定义占位符
+                            const processedContent = content.replace(/<\|newline\|>/g, '\n');
+                            contentDiv.textContent += processedContent;
+                            contentDiv.innerHTML = formatMessageContent(contentDiv.textContent);
+                            scrollToBottom();
+                        }
+                    }
+                }
+                
+                // 继续读取
+                readStream();
+            }).catch(error => {
+                console.error('Stream reading error:', error);
+                contentDiv.innerHTML += '<br><span style="color: red;">连接出错，请重试</span>';
                 sendButton.disabled = false;
                 inputArea.disabled = false;
                 isWaitingForResponse = false;
                 inputArea.focus();
-            }, 1500);
+            });
         }
-    }
+        
+        // 开始读取流
+        readStream();
+    })
+    .catch(error => {
+        console.error('API call error:', error);
+        removeAITypingIndicator();
+        // 显示错误消息
+        addMessage('抱歉，请求失败：' + error.message, 'ai');
+        sendButton.disabled = false;
+        inputArea.disabled = false;
+        isWaitingForResponse = false;
+        inputArea.focus();
+    });
+}
+
+// 新增：处理流数据块
+function processStreamChunk(chunk, contentDiv) {
+    // 将接收到的数据添加到内容中
+    contentDiv.textContent += chunk;
+    
+    // 格式化内容（处理换行等）
+    contentDiv.innerHTML = formatMessageContent(contentDiv.textContent);
+    
+    // 滚动到底部以显示最新内容
+    scrollToBottom();
+}
     
     // 添加消息到聊天容器
     function addMessage(content, sender) {
@@ -134,11 +262,22 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // 格式化消息内容（简单的格式化处理）
+    // 格式化消息内容（简单的格式化处理）
     function formatMessageContent(content) {
-        // 将换行符转换为<br>标签
-        return content.replace(/\n/g, '<br>');
+        try {
+            if (typeof content !== 'string') {
+                content = String(content);
+            }
+            
+            return content
+        } catch (error) {
+            console.error('Content parsing error:', error);
+            // 回退方案：直接替换占位符为换行符
+            return content.replace(/<\|newline\|>/g, '\n');
+        }
     }
-    
+
+        
     // 显示欢迎消息
     function showWelcomeMessage() {
         // 如果已经存在欢迎消息，不重复添加
@@ -151,7 +290,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         welcomeDiv.innerHTML = `
             <h1>Chat AI</h1>
-            <p>这是一个类似于 ChatGPT 的界面示例。在下方输入框中输入您的问题，AI 将会回复您。</p>
+            <p>这是ChatXZC AI小助手。在下方输入框中输入您的问题，AI 将会回复您。</p>
             <div style="margin-top: 30px; font-size: 14px; color: #aaa;">
                 <p><strong>使用说明：</strong></p>
                 <p>• 在下方输入框输入问题，按回车或点击发送按钮</p>

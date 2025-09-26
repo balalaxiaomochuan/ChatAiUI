@@ -326,3 +326,19 @@ body {
 .message-content li {
     margin: 5px 0;
 }
+
+.message-content {
+    word-wrap: break-word;
+    word-break: break-word;
+    white-space: pre-wrap;
+    line-height: 1.6;
+}
+
+.message-content p {
+    margin: 0.8em 0;
+}
+
+.message-content br {
+    display: block;
+    margin: 4px 0;
+}
