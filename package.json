@@ -2,8 +2,8 @@
   "name": "chataiui",
   "version": "1.0.0",
   "description": "Chat AI Interface",
-  "main": "js/main.js",
   "scripts": {
+    "build": "echo 'Building project...'",
     "start": "serve -s .",
     "dev": "serve ."
   },
