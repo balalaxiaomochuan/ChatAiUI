@@ -77,7 +77,7 @@ function callStreamAPI(prompt) {
     showAITypingIndicator();
     
     // 使用 fetch API 调用后端流式接口
-    fetch('http://localhost:8080/chataidesign/api/ai/stream', {
+    fetch('http://47.238.97.27:8080/chataidesign/api/ai/stream', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
