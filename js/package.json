@@ -1,0 +1,19 @@
+{
+  "name": "chataiui",
+  "version": "1.0.0",
+  "description": "Chat AI Interface",
+  "main": "js/main.js",
+  "scripts": {
+    "start": "serve -s .",
+    "dev": "serve ."
+  },
+  "dependencies": {
+    "marked": "^4.0.0"
+  },
+  "devDependencies": {
+    "serve": "^14.0.0"
+  },
+  "keywords": ["chat", "ai", "web"],
+  "author": "Your Name",
+  "license": "MIT"
+}
