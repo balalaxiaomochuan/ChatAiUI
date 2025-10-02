@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat AI - 主界面</title>
+    <link rel="stylesheet" href="css/arkweb.css">
+</head>
+<body>
+    <div id="app">
+        <!-- 语义化侧边栏 -->
+        <aside class="sidebar"> 
+            <header class="sidebar-header">
+                <h2>💬 Chat AI</h2>
+            </header>
+            <nav class="sidebar-nav">
+                <ul class="nav-menu">
+                    <li class="nav-item has-submenu">
+                        <div class="nav-link">智能遍历测试</div>
+                        <ul class="submenu">
+                            <li class="submenu-item">
+                                <a href="#" class="submenu-link" data-page="environment">环境管理</a>
+                            </li>
+                            <li class="submenu-item">
+                                <a href="#" class="submenu-link" data-page="execution">测试执行</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-page="arkweb">web鸿蒙化验收</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-page="global">全球化测试</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-page="ux">体验化测试</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-page="device">设备管理</a>
+                    </li>
+                </ul>
+            </nav>
+            <footer class="sidebar-footer">
+                <div>Chat AI v1.0</div>
+            </footer>
+        </aside>
+        
+        <!-- 语义化主内容区域 -->
+        <main class="main">
+            <!-- 智能遍历测试页面 -->
+            <section class="content-page active" id="traversal-page">
+                <div class="page-container">
+                    <header class="page-header">
+                        <h1>智能遍历测试</h1>
+                        <p>自动化遍历测试功能模块</p>
+                    </header>
+                    <div class="page-content">
+                        <div class="card">
+                            <h3>功能介绍</h3>
+                            <p>智能遍历测试是一种自动化测试方法，通过模拟用户操作行为，自动遍历应用程序的各个界面和功能模块，以发现潜在的问题和异常。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 环境管理页面 -->
+            <section class="content-page" id="environment-page">
+                <div class="page-container">
+                    <header class="page-header">
+                        <h1>环境管理</h1>
+                        <p>测试环境配置与管理</p>
+                    </header>
+                    <div class="page-content">
+                        <div class="card">
+                            <h3>环境配置</h3>
+                            <p>在此处可以配置和管理测试环境参数。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 测试执行页面 -->
+            <section class="content-page" id="execution-page">
+                <div class="page-container">
+                    <header class="page-header">
+                        <h1>测试执行</h1>
+                        <p>启动和监控测试任务</p>
+                    </header>
+                    <div class="page-content">
+                        <div class="card">
+                            <h3>任务执行</h3>
+                            <p>在此处可以启动、暂停和监控测试任务的执行状态。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Web鸿蒙化验收页面 -->
+            <section class="content-page" id="arkweb-page">
+                <div class="page-container">
+                    <header class="page-header">
+                        <h1>Web鸿蒙化验收</h1>
+                        <p>Web应用鸿蒙化兼容性测试</p>
+                    </header>
+                    <div class="page-content">
+                        <div class="card">
+                            <h3>验收标准</h3>
+                            <p>鸿蒙化验收测试确保Web应用在鸿蒙系统上的兼容性和性能表现。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 全球化测试页面 -->
+            <section class="content-page" id="global-page">
+                <div class="page-container">
+                    <header class="page-header">
+                        <h1>全球化测试</h1>
+                        <p>多语言和多地区适配测试</p>
+                    </header>
+                    <div class="page-content">
+                        <div class="card">
+                            <h3>测试范围</h3>
+                            <p>验证应用在不同语言、地区和文化环境下的表现。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 体验化测试页面 -->
+            <section class="content-page" id="ux-page">
+                <div class="page-container">
+                    <header class="page-header">
+                        <h1>体验化测试</h1>
+                        <p>用户体验和交互测试</p>
+                    </header>
+                    <div class="page-content">
+                        <div class="card">
+                            <h3>测试维度</h3>
+                            <p>从用户视角出发，评估应用的易用性、可访问性和用户满意度。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 设备管理页面 - 修改部分 -->
+            <section class="content-page" id="device-page">
+                <div class="page-container">
+                    <!-- 标签页容器 -->
+                    <div class="tab-container">
+                        <nav class="tabs">
+                            <button class="tab-btn active" data-tab="physical">物理设备</button>
+                            <button class="tab-btn" data-tab="cloud">云设备</button>
+                        </nav>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="physical-tab">
+                                <div class="device-content">
+                                    <header class="tab-header">
+                                        <h2>物理设备管理</h2>
+                                        <p>连接和管理实体测试设备</p>
+                                        <!-- 添加设置按钮 -->
+                                        <button class="settings-btn" id="physical-settings">⚙️ 设置</button>
+                                    </header>
+                                    <div class="tab-body">
+                                        <div class="card">
+                                            <h3>设备列表</h3>
+                                            <p>当前连接的物理设备信息展示区域。</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="cloud-tab">
+                                <div class="device-content">
+                                    <header class="tab-header">
+                                        <h2>云设备管理</h2>
+                                        <p>云端虚拟设备资源管理</p>
+                                        <!-- 添加设置按钮 -->
+                                        <button class="settings-btn" id="cloud-settings">⚙️ 设置</button>
+                                    </header>
+                                    <div class="tab-body">
+                                        <div class="card">
+                                            <h3>云设备资源</h3>
+                                            <p>云端设备资源池和分配情况展示。</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <script src="js/arkweb.js"></script>
+</body>
+</html>

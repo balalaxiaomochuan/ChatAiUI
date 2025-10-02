@@ -77,13 +77,14 @@ function callStreamAPI(prompt) {
     showAITypingIndicator();
     
     // 使用 fetch API 调用后端流式接口
-    fetch('http://47.238.97.27:8080/chataidesign/api/ai/stream', {
+    fetch('http://127.0.0.1:8081/chataidesign/api/ai/stream', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'text/event-stream'
         },
-        body: JSON.stringify({prompt: prompt})
+        body: JSON.stringify({prompt: prompt}),
+        credentials: 'include'
     })
     .then(response => {
         // 移除正在输入的指示器

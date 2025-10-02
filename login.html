@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户登录 - Chat AI</title>
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+    <div id="app">
+        <!-- 侧边栏 -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>💬 Chat AI</h2>
+            </div>
+            <div class="sidebar-content">
+                <!-- 移除了欢迎回来字样 -->
+            </div>
+            <div class="sidebar-footer">
+                <div>Chat AI v1.0</div>
+            </div>
+        </aside>
+        
+        <!-- 主登录区域 -->
+        <main class="main">
+            <div class="login-container">
+                <div class="login-card">
+                    <div class="login-header">
+                        <h2>用户登录</h2>
+                        <p>请输入您的账户信息</p>
+                    </div>
+                    <!-- 登录表单 -->
+                    <form id="loginForm" class="login-form">
+                        <div class="form-group">
+                            <input type="text" name="username" placeholder="用户名" required class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" name="password" placeholder="密码" required class="form-input">
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="login-btn">登录</button>
+                        </div>
+                        <div class="form-footer">
+                            <a href="#" class="forgot-password">忘记密码？</a>
+                        </div>
+                    </form>
+                    
+                    <!-- 切换到注册链接 -->
+                    <div class="switch-form">
+                        <p>还没有账户？<a href="#" id="showRegister">立即注册</a></p>
+                    </div>
+                </div>
+                
+                <!-- 注册卡片（默认隐藏） -->
+                <div class="register-card" id="registerCard" style="display: none;">
+                    <div class="login-header">
+                        <h2>用户注册</h2>
+                        <p>创建您的账户</p>
+                    </div>
+                    <form id="registerForm" class="login-form">
+                        <div class="form-group">
+                            <input type="text" name="regUsername" placeholder="用户名" required class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <input type="email" name="email" placeholder="邮箱" required class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" name="regPassword" placeholder="密码" required class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" name="confirmPassword" placeholder="确认密码" required class="form-input">
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="login-btn">注册</button>
+                        </div>
+                    </form>
+                    
+                    <!-- 切换到登录链接 -->
+                    <div class="switch-form">
+                        <p>已有账户？<a href="#" id="showLogin">立即登录</a></p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="js/login.js"></script>
+</body>
+</html>

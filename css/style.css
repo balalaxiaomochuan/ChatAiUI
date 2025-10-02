@@ -342,3 +342,26 @@ body {
     display: block;
     margin: 4px 0;
 }
+
+/* 改进的子菜单样式 */
+.has-submenu > .nav-link::after {
+    content: '▶';
+    float: right;
+    transition: transform 0.3s ease;
+    font-size: 12px;
+}
+
+.has-submenu.active > .nav-link::after {
+    transform: rotate(90deg);
+}
+
+/* 改进的菜单项悬停效果 */
+.nav-item.has-submenu:hover {
+    background: rgba(255,255,255,0.05);
+}
+
+/* 标签按钮焦点状态 */
+.tab-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+}
